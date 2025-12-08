@@ -2,7 +2,7 @@
 # แนะนำรุ่น -alpine เพราะขนาดไฟล์เล็กมาก (ประมาณ 40MB เทียบกับปกติ 900MB+)
 FROM node:18-alpine
 
-# 2. กำหนดโฟลเดอร์ทำงานภายใน Container
+# 2. กำหนดโฟลเดอร์ทำงานภายใน Container # แปล: "เข้าไปในห้องทำงานชื่อ /app"
 WORKDIR /app
 
 # 3. คัดลอกเฉพาะไฟล์ package เพื่อลง library ก่อน (Technique: Layer Caching)
@@ -12,7 +12,7 @@ COPY package*.json ./
 # 4. ติดตั้ง Library (ใช้ npm ci จะดีกว่า npm install ใน production เพราะแม่นยำกว่า)
 RUN npm ci --only=production
 
-# 5. คัดลอก Source Code ทั้งหมดเข้าไป
+# 5. คัดลอก Source Code ทั้งหมดเข้าไป # แปล: "เอาของทุกอย่างที่วางอยู่ตรงหน้าฉัน (เครื่องเรา) ไปวางแปะไว้ที่ห้อง WORKDIR (ใน Container)"
 COPY . .
 
 # 6. (Optional) เปลี่ยน User จาก root เป็น 'node' เพื่อความปลอดภัย
@@ -24,3 +24,4 @@ EXPOSE 3000
 # 8. คำสั่งรันโปรแกรม
 # แนะนำให้เรียก node โดยตรง แทน npm start เพื่อการจัดการ signal ที่ดีกว่า
 CMD ["node", "app.js"]
+
